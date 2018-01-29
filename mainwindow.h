@@ -94,13 +94,20 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private:
     void parseData();
 
-    void parseDataInMac(const QStringList& lines, QList<Manager>& managerList);
+    void parseDataInMac(QFile& file, QList<Manager>& managerList);
 
-    void parseDataInWin(QFile& file);
+    void parseDataInWin(QFile& file, QList<Manager>& managerList);
+
+    void parseLineToManager(const QStringList& line, Manager& manager);
+
+    void handelManagerList(QList<Manager>& managerList);
 
     void outputResult(QList<Manager>& managerList);
+
+
 
 private:
     Ui::MainWindow *ui;

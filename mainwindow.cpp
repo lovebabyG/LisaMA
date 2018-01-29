@@ -6,9 +6,10 @@
 #include <QFile>
 #include <QTextStream>
 #include <QList>
+#include <QDir>
 
 bool debug = false;
-bool inMac = true;
+bool csvConvertedinMac = true;
 
 QStringList keyWordListOfEliteUni = {"Oxford", // University of Oxford
                                      "Cambridge", // University of Cambridge
@@ -125,41 +126,241 @@ MainWindow::~MainWindow()
 
 void MainWindow::parseData()
 {
-    QString filePath = "/Users/yijia_gong/workspace/QtProjects/test/InvestManagerData.csv";
-    //QString filePath = "/Users/yijia_gong/workspace/QtProjects/test/test1.csv";
+    QString filePath;
+    if (csvConvertedinMac)
+    {
+//        filePath = "/Users/yijia_gong/workspace/QtProjects/test/InvestManagerData.csv";
+        filePath = "D:/workspace/qt project/LisaMA-master/LisaMA/InvestManagerData.csv";
+    }
+    else
+    {
+        filePath = "D:/workspace/qt project/LisaMA-master/InvestManagerData.csv";
+    }
+
 
     QFile file(filePath);
 
     if (!file.open(QIODevice::ReadOnly)) {
         qDebug() << file.errorString();
+        qDebug() << "current path = " << QDir::currentPath();
         return;
     }
 
     QList<Manager> managerList;
 
-    if (inMac)
+    if (csvConvertedinMac)
     {
-        QString replacedData;
-        while (!file.atEnd())
-        {
-               QByteArray line = file.readLine();
-               QString data = line.data();
-               QString newData1 = data.replace("\r\n", "\n");
-               replacedData = newData1.replace("\r", "\n");
-       }
-
-       QStringList replacedDataList = replacedData.split(QChar('\n'));
-       parseDataInMac(replacedDataList, managerList);
+       parseDataInMac(file, managerList);
     }
     else
     {
-        // TOD
-        parseDataInWin(file);
+        parseDataInWin(file, managerList);
     }
 
     file.close();
 
+    handelManagerList(managerList);
 
+    outputResult(managerList);
+}
+
+void MainWindow::parseDataInMac(QFile& file, QList<Manager>& managerList)
+{
+    QString dataReplaced;
+    while (!file.atEnd())
+    {
+           QByteArray line = file.readLine();
+           QString data = line.data();
+           QString newData1 = data.replace("\r\n", "\n");
+           dataReplaced = newData1.replace("\r", "\n");
+   }
+
+   QStringList lines = dataReplaced.split(QChar('\n'));
+
+   for (int j = 0; j < lines.size(); ++j)
+   {
+       QString line = lines.at(j);
+       QStringList splitLineData = line.split(QChar(';'), QString::KeepEmptyParts, Qt::CaseInsensitive);
+
+       Manager manager;
+       parseLineToManager(splitLineData, manager);
+       managerList.push_back(manager);
+   }
+}
+
+void MainWindow::parseDataInWin(QFile& file, QList<Manager>& managerList)
+{
+    QTextStream in(&file);
+
+    int j = 0;
+
+    while (!in.atEnd())
+    {
+        qDebug() << j;
+        j++;
+
+        QString line = in.readLine();
+        QStringList splitLineData = line.split(QChar(';'), QString::KeepEmptyParts, Qt::CaseInsensitive);
+
+        Manager manager;
+        parseLineToManager(splitLineData, manager);
+        managerList.push_back(manager);
+
+    }
+}
+
+void MainWindow::parseLineToManager(const QStringList& line, Manager& manager)
+{
+    for (int i = 0; i < line.size(); ++i)
+    {
+        if (i >= last_end_index)
+        {
+            continue;
+        }
+        QString data = line.at(i);
+        switch (i)
+        {
+            case match_id_index:
+            bool ok;
+            manager.match_id = data.toInt(&ok);
+            break;
+
+            case bachelor01_university_index:
+            manager.bachelor01_university = data;
+            break;
+            case bachelor01_university_standardiz_index:
+            manager.bachelor01_university_standardized = data;
+            break;
+            case bachelor01_degree_index:
+            manager.bachelor01_degree = data;
+            break;
+            case bachelor01_degree_standardized_index:
+            manager.bachelor01_degree_standardized = data;
+            break;
+
+            case bachelor02_university_index:
+            manager.bachelor02_university = data;
+            break;
+            case bachelor02_university_standardiz_index:
+            manager.bachelor02_university_standardized = data;
+            break;
+            case bachelor02_degree_index:
+            manager.bachelor02_degree = data;
+            break;
+            case bachelor02_degree_standardized_index:
+            manager.bachelor02_degree_standardized = data;
+            break;
+
+            case master01_university_index:
+            manager.master01_university = data;
+            break;
+            case master01_university_standardized_index:
+            manager.master01_university_standardized = data;
+            break;
+            case master01_degree_index:
+            manager.master01_degree = data;
+            break;
+            case master01_degree_standardized_index:
+            manager.master01_degree_standardized = data;
+            break;
+
+            case master02_university_index:
+            manager.master02_university = data;
+            break;
+            case master02_university_standardized_index:
+            manager.master02_university_standardized = data;
+            break;
+            case master02_degree_index:
+            manager.master02_degree = data;
+            break;
+            case master02_degree_standardized_index:
+            manager.master02_degree_standardized = data;
+            break;
+
+            case mba01_university_index:
+            manager.mba01_university = data;
+            break;
+            case mba01_university_standardized_index:
+            manager.mba01_university_standardized = data;
+            break;
+            case mba01_degree_index:
+            manager.mba01_degree = data;
+            break;
+            case mba01_degree_standardized_index:
+            manager.mba01_degree_standardized = data;
+            break;
+
+            case mba02_university_index:
+            manager.mba02_university = data;
+            break;
+            case mba02_university_standardized_index:
+            manager.mba02_university_standardized = data;
+            break;
+            case mba02_degree_index:
+            manager.mba02_degree = data;
+            break;
+            case mba02_degree_standardized_index:
+            manager.mba02_degree_standardized = data;
+            break;
+
+            case phd01_university_index:
+            manager.phd01_university = data;
+            break;
+            case phd01_university_standardized_index:
+            manager.phd01_university_standardized = data;
+            break;
+            case phd01_degree_index:
+            manager.phd01_degree = data;
+            break;
+            case phd01_degree_standardized_index:
+            manager.phd01_degree_standardized = data;
+            break;
+
+            case phd02_university_index:
+            manager.phd02_university = data;
+            break;
+            case phd02_university_standardized_index:
+            manager.phd02_university_standardized = data;
+            break;
+            case phd02_degree_index:
+            manager.phd02_degree = data;
+            break;
+            case phd02_degree_standardized_index:
+            manager.phd02_degree_standardized = data;
+            break;
+
+            case jd01_university_index:
+            manager.jd01_university = data;
+            break;
+            case jd01_university_standardized_index:
+            manager.jd01_university_standardized = data;
+            break;
+            case jd01_degree_index:
+            manager.jd01_degree = data;
+            break;
+            case jd01_degree_standardized_index:
+            manager.jd01_degree_standardized = data;
+            break;
+
+            case other01_university_index:
+            manager.other01_university = data;
+            break;
+            case other01_university_standardized_index:
+            manager.other01_university_standardized = data;
+            break;
+            case other01_degree_index:
+            manager.other01_degree = data;
+            break;
+            case other01_degree_standardized_index:
+            manager.other01_degree_standardized = data;
+            break;
+
+        }
+    }
+}
+
+void MainWindow::handelManagerList(QList<Manager>& managerList)
+{
     for (int i = 0; i < managerList.size(); ++i)
     {
         Manager& manager = managerList[i];
@@ -207,6 +408,8 @@ void MainWindow::parseData()
         {
             manager.hasJD = true;
         }
+
+
 
         if (debug)
         {
@@ -296,337 +499,6 @@ void MainWindow::parseData()
     }
 
 
-    outputResult(managerList);
-}
-
-void MainWindow::parseDataInMac(const QStringList& lines, QList<Manager>& managerList)
-{
-    for (int j = 0; j < lines.size(); ++j)
-    {
-        QString line = lines.at(j);
-        Manager manager;
-
-        QStringList splitLineData = line.split(QChar(';'), QString::KeepEmptyParts, Qt::CaseInsensitive);
-
-        for (int i = 0; i < splitLineData.size(); ++i)
-        {
-            if (i >= last_end_index)
-            {
-                continue;
-            }
-            QString data = splitLineData.at(i);
-            switch (i)
-            {
-                case match_id_index:
-                bool ok;
-                manager.match_id = data.toInt(&ok);
-                break;
-
-                case bachelor01_university_index:
-                manager.bachelor01_university = data;
-                break;
-                case bachelor01_university_standardiz_index:
-                manager.bachelor01_university_standardized = data;
-                break;
-                case bachelor01_degree_index:
-                manager.bachelor01_degree = data;
-                break;
-                case bachelor01_degree_standardized_index:
-                manager.bachelor01_degree_standardized = data;
-                break;
-
-                case bachelor02_university_index:
-                manager.bachelor02_university = data;
-                break;
-                case bachelor02_university_standardiz_index:
-                manager.bachelor02_university_standardized = data;
-                break;
-                case bachelor02_degree_index:
-                manager.bachelor02_degree = data;
-                break;
-                case bachelor02_degree_standardized_index:
-                manager.bachelor02_degree_standardized = data;
-                break;
-
-                case master01_university_index:
-                manager.master01_university = data;
-                break;
-                case master01_university_standardized_index:
-                manager.master01_university_standardized = data;
-                break;
-                case master01_degree_index:
-                manager.master01_degree = data;
-                break;
-                case master01_degree_standardized_index:
-                manager.master01_degree_standardized = data;
-                break;
-
-                case master02_university_index:
-                manager.master02_university = data;
-                break;
-                case master02_university_standardized_index:
-                manager.master02_university_standardized = data;
-                break;
-                case master02_degree_index:
-                manager.master02_degree = data;
-                break;
-                case master02_degree_standardized_index:
-                manager.master02_degree_standardized = data;
-                break;
-
-                case mba01_university_index:
-                manager.mba01_university = data;
-                break;
-                case mba01_university_standardized_index:
-                manager.mba01_university_standardized = data;
-                break;
-                case mba01_degree_index:
-                manager.mba01_degree = data;
-                break;
-                case mba01_degree_standardized_index:
-                manager.mba01_degree_standardized = data;
-                break;
-
-                case mba02_university_index:
-                manager.mba02_university = data;
-                break;
-                case mba02_university_standardized_index:
-                manager.mba02_university_standardized = data;
-                break;
-                case mba02_degree_index:
-                manager.mba02_degree = data;
-                break;
-                case mba02_degree_standardized_index:
-                manager.mba02_degree_standardized = data;
-                break;
-
-                case phd01_university_index:
-                manager.phd01_university = data;
-                break;
-                case phd01_university_standardized_index:
-                manager.phd01_university_standardized = data;
-                break;
-                case phd01_degree_index:
-                manager.phd01_degree = data;
-                break;
-                case phd01_degree_standardized_index:
-                manager.phd01_degree_standardized = data;
-                break;
-
-                case phd02_university_index:
-                manager.phd02_university = data;
-                break;
-                case phd02_university_standardized_index:
-                manager.phd02_university_standardized = data;
-                break;
-                case phd02_degree_index:
-                manager.phd02_degree = data;
-                break;
-                case phd02_degree_standardized_index:
-                manager.phd02_degree_standardized = data;
-                break;
-
-                case jd01_university_index:
-                manager.jd01_university = data;
-                break;
-                case jd01_university_standardized_index:
-                manager.jd01_university_standardized = data;
-                break;
-                case jd01_degree_index:
-                manager.jd01_degree = data;
-                break;
-                case jd01_degree_standardized_index:
-                manager.jd01_degree_standardized = data;
-                break;
-
-                case other01_university_index:
-                manager.other01_university = data;
-                break;
-                case other01_university_standardized_index:
-                manager.other01_university_standardized = data;
-                break;
-                case other01_degree_index:
-                manager.other01_degree = data;
-                break;
-                case other01_degree_standardized_index:
-                manager.other01_degree_standardized = data;
-                break;
-
-            }
-        }
-
-        managerList.push_back(manager);
-    }
-}
-
-void MainWindow::parseDataInWin(QFile& file)
-{
-
-    /*
-    //    QTextStream in(&file);
-    //    QList<Manager> managerList;
-    //    int j = 0;
-
-    //    while (!in.atEnd())
-    //    {
-    //        qDebug() << j;
-    //        j++;
-    //        QString line = in.readLine();
-    //        QStringList lineData = line.split(QChar(';'), QString::KeepEmptyParts, Qt::CaseInsensitive);
-    //
-    //        Manager manager;
-
-    //        for (int i = 0; i < lineData.size(); ++i)
-    //        {
-    //            if (i >= last_end_index)
-    //            {
-    //                continue;
-    //            }
-    //            QString data = lineData.at(i);
-    //            switch (i)
-    //            {
-    //                case match_id_index:
-    //                bool ok;
-    //                manager.match_id = data.toInt(&ok);
-    //                break;
-
-    //                case bachelor01_university_index:
-    //                manager.bachelor01_university = data;
-    //                break;
-    //                case bachelor01_university_standardiz_index:
-    //                manager.bachelor01_university_standardiz = data;
-    //                break;
-    //                case bachelor01_degree_index:
-    //                manager.bachelor01_degree = data;
-    //                break;
-    //                case bachelor01_degree_standardized_index:
-    //                manager.bachelor01_degree_standardized = data;
-    //                break;
-
-    //                case bachelor02_university_index:
-    //                manager.bachelor02_university = data;
-    //                break;
-    //                case bachelor02_university_standardiz_index:
-    //                manager.bachelor02_university_standardiz = data;
-    //                break;
-    //                case bachelor02_degree_index:
-    //                manager.bachelor02_degree = data;
-    //                break;
-    //                case bachelor02_degree_standardized_index:
-    //                manager.bachelor02_degree_standardized = data;
-    //                break;
-
-    //                case master01_university_index:
-    //                manager.master01_university = data;
-    //                break;
-    //                case master01_university_standardized_index:
-    //                manager.master01_university_standardized = data;
-    //                break;
-    //                case master01_degree_index:
-    //                manager.master01_degree = data;
-    //                break;
-    //                case master01_degree_standardized_index:
-    //                manager.master01_degree_standardized = data;
-    //                break;
-
-    //                case master02_university_index:
-    //                manager.master02_university = data;
-    //                break;
-    //                case master02_university_standardized_index:
-    //                manager.master02_university_standardized = data;
-    //                break;
-    //                case master02_degree_index:
-    //                manager.master02_degree = data;
-    //                break;
-    //                case master02_degree_standardized_index:
-    //                manager.master02_degree_standardized = data;
-    //                break;
-
-    //                case mba01_university_index:
-    //                manager.mba01_university = data;
-    //                break;
-    //                case mba01_university_standardized_index:
-    //                manager.mba01_university_standardized = data;
-    //                break;
-    //                case mba01_degree_index:
-    //                manager.mba01_degree = data;
-    //                break;
-    //                case mba01_degree_standardized_index:
-    //                manager.mba01_degree_standardized = data;
-    //                break;
-
-    //                case mba02_university_index:
-    //                manager.mba02_university = data;
-    //                break;
-    //                case mba02_university_standardized_index:
-    //                manager.mba02_university_standardized = data;
-    //                break;
-    //                case mba02_degree_index:
-    //                manager.mba02_degree = data;
-    //                break;
-    //                case mba02_degree_standardized_index:
-    //                manager.mba02_degree_standardized = data;
-    //                break;
-
-    //                case phd01_university_index:
-    //                manager.phd01_university = data;
-    //                break;
-    //                case phd01_university_standardized_index:
-    //                manager.phd01_university_standardized = data;
-    //                break;
-    //                case phd01_degree_index:
-    //                manager.phd01_degree = data;
-    //                break;
-    //                case phd01_degree_standardized_index:
-    //                manager.phd01_degree_standardized = data;
-    //                break;
-
-    //                case phd02_university_index:
-    //                manager.phd02_university = data;
-    //                break;
-    //                case phd02_university_standardized_index:
-    //                manager.phd02_university_standardized = data;
-    //                break;
-    //                case phd02_degree_index:
-    //                manager.phd02_degree = data;
-    //                break;
-    //                case phd02_degree_standardized_index:
-    //                manager.phd02_degree_standardized = data;
-    //                break;
-
-    //                case jd01_university_index:
-    //                manager.jd01_university = data;
-    //                break;
-    //                case jd01_university_standardized_index:
-    //                manager.jd01_university_standardized = data;
-    //                break;
-    //                case jd01_degree_index:
-    //                manager.jd01_degree = data;
-    //                break;
-    //                case jd01_degree_standardized_index:
-    //                manager.jd01_degree_standardized = data;
-    //                break;
-
-    //                case other01_university_index:
-    //                manager.other01_university = data;
-    //                break;
-    //                case other01_university_standardized_index:
-    //                manager.other01_university_standardized = data;
-    //                break;
-    //                case other01_degree_index:
-    //                manager.other01_degree = data;
-    //                break;
-    //                case other01_degree_standardized_index:
-    //                manager.other01_degree_standardized = data;
-    //                break;
-
-    //            }
-    //        }
-
-    //        managerList.push_back(manager);
-    //
-    //    }
-    */
 }
 
 void MainWindow::outputResult(QList<Manager>& managerList)
