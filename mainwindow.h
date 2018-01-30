@@ -79,7 +79,7 @@ public:
     bool hasMBA;
     bool hasPHD;
     bool hasJD;
-    bool isEliteUni;
+    int isEliteUni = 0;
 
 
 };

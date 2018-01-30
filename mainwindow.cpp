@@ -11,6 +11,82 @@
 bool debug = false;
 bool csvConvertedinMac = true;
 
+QStringList ExatNameListOfEliteUni = {
+                                  "Oxford University",                 // University of Oxford
+                                  "All Souls College, Oxford University",  // University of Oxford
+                                  "University of Oxford",                  // University of Oxford
+                                  "University College, Oxford University", // University of Oxford
+
+                                  "University of Cambridge", // University of Cambridge
+                                  "Murray Edwards College, Cambridge University (New Hall, Cambridge University prior to 06/2008)", // University of Cambridge
+                                  "Judge Business School (Judge Institute of Management Studies prior to 09/2005)", // University of Cambridge
+                                  "King's College Cambridge, University of Cambridge", // University of Cambridge
+                                  "Christ's College, Cambridge University", // University of Cambridge
+                                  "Gonville and Caius College, Cambridge University", // University of Cambridge
+                                  "Downing College, Cambridge University", // University of Cambridge
+
+                                  // California Institute of Technology; University of California, Los Angeles;
+                                  "University of California, Berkeley", // University of California, Berkeley
+                                  "University of California, Los Angeles", // University of California, Los Angeles
+                                  "Anderson Graduate School of Management, University of California", // University of California, Los Angeles
+
+                                  "Stanford", // Stanford University
+                                  "Stanford University", // Stanford University
+                                  "Stanford University, Graduate School of Business", // Stanford University
+                                  "Stanford University School of Medicine", // Stanford University
+
+                                  "Massachusetts Institute of Technology (MIT)", // Massachusetts Institute of Technology
+                                  "University of Massachusetts, Medical School", // Massachusetts Institute of Technology
+                                  "Massachusetts Institute of Technology", // Massachusetts Institute of Technology
+                                  "Massachusetts Institute of Technology (MIT) Sloan School of Management", // Massachusetts Institute of Technology
+                                  "MIT Sloan School of Management",
+
+                                  "Harvard", // Harvard University
+                                  "Harvard Business School", // Harvard University
+                                  "Harvard University", // Harvard University
+                                  "Harvard Graduate School of Arts and Sciences", // Harvard University
+                                  "Harvard College", // Harvard University
+                                  "Harvard Medical School", // Harvard University
+                                  "Harvard Law School", // Harvard University
+
+                                  "Princeton University", // Princeton University
+
+                                  "Imperial College London", // Imperial College London
+                                  "Imperial College London (The Imperial College of Science Technology and Medicine)", // Imperial College London
+
+                                  "University of Chicago", // University of Chicago
+                                  "Booth School of Business, University of Chicago", // University of Chicago
+
+                                  "Eidgenossische Technische Hochschule Zurich (ETH) (Swiss Federal Institute of Technology Zurich)", // ETH Zurich – Swiss Federal Institute of Technology Zurich
+
+                                  "University of Pennsylvania", // University of Pennsylvania
+                                  "Wharton School, University of Pennsylvania", // University of Pennsylvania
+                                  "Moore School of Electrical Engineering, University of Pennsylvania", // University of Pennsylvania
+
+                                  "Yale School of Management", // Yale University
+                                  "Yale University", // Yale University
+
+                                  "Johns Hopkins University", // Johns Hopkins University
+                                  "Johns Hopkins University School for Advanced International Studies", // Johns Hopkins University
+                                  "Johns Hopkins University School for Advanced International Studies (SAIS)", // Johns Hopkins University
+
+                                  "Columbia University", // Columbia University
+                                  "Columbia Business School", // Columbia University
+                                  "Columbia College, Columbia University", // Columbia University
+
+                                  "University College London (UCL)", // UCL
+                                  "University College London",
+
+                                  "Duke University", // Duke University
+
+                                  "Cornell University", // Cornell University
+                                  "Cornell University School of Industrial and Labor Relations",
+
+                                  "Northwestern University", // Northwestern University
+                                  "Kellogg School of Management, Northwestern University" // Northwestern University
+                                    };
+
+
 QStringList keyWordListOfEliteUni = {"Oxford", // University of Oxford
                                      "Cambridge", // University of Cambridge
                                      "California", // California Institute of Technology; University of California, Los Angeles; University of California, Berkeley
@@ -26,7 +102,7 @@ QStringList keyWordListOfEliteUni = {"Oxford", // University of Oxford
                                      "Johns Hopkins", // Johns Hopkins University
                                      "Columbia", // Columbia University
                                      "UCL", // UCL
-                                     "Duke University", // Duke University
+                                     "Duke", // Duke University
                                      "Cornell", // Cornell University
                                      "Northwestern" // Northwestern University
                                     };
@@ -129,8 +205,8 @@ void MainWindow::parseData()
     QString filePath;
     if (csvConvertedinMac)
     {
-//        filePath = "/Users/yijia_gong/workspace/QtProjects/test/InvestManagerData.csv";
-        filePath = "D:/workspace/qt project/LisaMA-master/LisaMA/InvestManagerData.csv";
+        filePath = "/Users/yijia_gong/workspace/QtProjects/test/InvestManagerData.csv";
+//        filePath = "D:/workspace/qt project/LisaMA-master/LisaMA/InvestManagerData.csv";
     }
     else
     {
@@ -369,6 +445,7 @@ void MainWindow::handelManagerList(QList<Manager>& managerList)
         manager.hasMBA = false;
         manager.hasJD = false;
 
+        // ceo edu level
         if (!manager.phd01_university.isEmpty() || !manager.phd01_university_standardized.isEmpty() || !manager.phd01_degree.isEmpty() || !manager.phd01_degree_standardized.isEmpty() ||
             !manager.phd02_university.isEmpty() || !manager.phd02_university_standardized.isEmpty() || !manager.phd02_degree.isEmpty() || !manager.phd02_degree_standardized.isEmpty() ||
             !manager.jd01_university.isEmpty()  || !manager.jd01_university_standardized.isEmpty()  || !manager.jd01_degree.isEmpty()  || !manager.jd01_degree_standardized.isEmpty())
@@ -392,6 +469,7 @@ void MainWindow::handelManagerList(QList<Manager>& managerList)
         }
 
 
+        // phd mba JD
         if (!manager.phd01_university.isEmpty() || !manager.phd01_university_standardized.isEmpty() || !manager.phd01_degree.isEmpty() || !manager.phd01_degree_standardized.isEmpty() ||
             !manager.phd02_university.isEmpty() || !manager.phd02_university_standardized.isEmpty() || !manager.phd02_degree.isEmpty() || !manager.phd02_degree_standardized.isEmpty())
         {
@@ -409,7 +487,126 @@ void MainWindow::handelManagerList(QList<Manager>& managerList)
             manager.hasJD = true;
         }
 
+        // elite uni
+        for (QString& ExatNameOfEliteUni : ExatNameListOfEliteUni)
+        {
+            if (ExatNameOfEliteUni == manager.phd01_university || ExatNameOfEliteUni == manager.phd01_university_standardized)
+            {
+                manager.isEliteUni = 1;
+                break;
+            }
+            else if (ExatNameOfEliteUni == manager.phd02_university || ExatNameOfEliteUni == manager.phd02_university_standardized)
+            {
+                manager.isEliteUni = 1;
+                break;
+            }
+            else if (ExatNameOfEliteUni == manager.jd01_university || ExatNameOfEliteUni == manager.jd01_university_standardized)
+            {
+                manager.isEliteUni = 1;
+                break;
+            }
+            else if (ExatNameOfEliteUni == manager.mba01_university || ExatNameOfEliteUni == manager.mba01_university_standardized)
+            {
+                manager.isEliteUni = 1;
+                break;
+            }
+            else if (ExatNameOfEliteUni == manager.mba02_university || ExatNameOfEliteUni == manager.mba02_university_standardized)
+            {
+                manager.isEliteUni = 1;
+                break;
+            }
+            else if (ExatNameOfEliteUni == manager.master01_university || ExatNameOfEliteUni == manager.master01_university_standardized)
+            {
+                manager.isEliteUni = 1;
+                break;
+            }
+            else if (ExatNameOfEliteUni == manager.master02_university || ExatNameOfEliteUni == manager.master02_university_standardized)
+            {
+                manager.isEliteUni = 1;
+                break;
+            }
+            else if (ExatNameOfEliteUni == manager.bachelor01_university || ExatNameOfEliteUni == manager.bachelor01_university_standardized)
+            {
+                manager.isEliteUni = 1;
+                break;
+            }
+            else if (ExatNameOfEliteUni == manager.bachelor02_university || ExatNameOfEliteUni == manager.bachelor02_university_standardized)
+            {
+                manager.isEliteUni = 1;
+                break;
+            }
+            else if (ExatNameOfEliteUni == manager.other01_university || ExatNameOfEliteUni == manager.other01_university_standardized)
+            {
+                manager.isEliteUni = 1;
+                break;
+            }
+        }
 
+        if (1 != manager.isEliteUni)
+        {
+            for (QString &keyWordOfEliteUni: keyWordListOfEliteUni)
+            {
+                if (manager.phd01_university.contains(keyWordOfEliteUni, Qt::CaseInsensitive)      || manager.phd01_university_standardized.contains(keyWordOfEliteUni, Qt::CaseInsensitive))
+                {
+                    manager.isEliteUni = 2;
+                    qDebug("i = %3d, match_id = %5d, phd01_university      = %60s     phd01_university_standardized      = %20s", i+2, manager.match_id, manager.phd01_university.toStdString().c_str(), manager.phd01_university_standardized.toStdString().c_str());
+                }
+
+                if (manager.phd02_university.contains(keyWordOfEliteUni, Qt::CaseInsensitive)      || manager.phd02_university_standardized.contains(keyWordOfEliteUni, Qt::CaseInsensitive))
+                {
+                    manager.isEliteUni = 2;
+                    qDebug("i = %3d, match_id = %5d, phd02_university      = %60s     phd02_university_standardized      = %20s", i+2, manager.match_id, manager.phd02_university.toStdString().c_str(), manager.phd02_university_standardized.toStdString().c_str());
+                }
+
+                if (manager.jd01_university.contains(keyWordOfEliteUni,  Qt::CaseInsensitive)      || manager.jd01_university_standardized.contains(keyWordOfEliteUni, Qt::CaseInsensitive))
+                {
+                    manager.isEliteUni = 2;
+                    qDebug("i = %3d, match_id = %5d, jd01_university       = %60s      jd01_university_standardized       = %20s", i+2, manager.match_id, manager.jd01_university.toStdString().c_str(), manager.jd01_university_standardized.toStdString().c_str());
+                }
+
+                if (manager.mba01_university.contains(keyWordOfEliteUni, Qt::CaseInsensitive)      || manager.mba01_university_standardized.contains(keyWordOfEliteUni, Qt::CaseInsensitive))
+                {
+                    manager.isEliteUni = 2;
+                    qDebug("i = %3d, match_id = %5d, mba01_university      = %60s     mba01_university_standardized      = %20s", i+2, manager.match_id, manager.mba01_university.toStdString().c_str(), manager.mba01_university_standardized.toStdString().c_str());
+                }
+
+                if (manager.mba02_university.contains(keyWordOfEliteUni, Qt::CaseInsensitive)      || manager.mba02_university_standardized.contains(keyWordOfEliteUni, Qt::CaseInsensitive))
+                {
+                    manager.isEliteUni = 2;
+                    qDebug("i = %3d, match_id = %5d, mba02_university      = %60s     mba02_university_standardized      = %20s", i+2, manager.match_id, manager.mba02_university.toStdString().c_str(), manager.mba02_university_standardized.toStdString().c_str());
+                }
+
+                if (manager.master01_university.contains(keyWordOfEliteUni, Qt::CaseInsensitive)   || manager.master01_university_standardized.contains(keyWordOfEliteUni, Qt::CaseInsensitive))
+                {
+                    manager.isEliteUni = 2;
+                    qDebug("i = %3d, match_id = %5d, master01_university   = %60s     master01_university_standardized   = %20s", i+2, manager.match_id, manager.master01_university.toStdString().c_str(), manager.master01_university_standardized.toStdString().c_str());
+                }
+
+                if (manager.master02_university.contains(keyWordOfEliteUni, Qt::CaseInsensitive)   || manager.master02_university_standardized.contains(keyWordOfEliteUni, Qt::CaseInsensitive))
+                {
+                    manager.isEliteUni = 2;
+                    qDebug("i = %3d, match_id = %5d, master02_university   = %60s     master02_university_standardized   = %20s", i+2, manager.match_id, manager.master02_university.toStdString().c_str(), manager.master02_university_standardized.toStdString().c_str());
+                }
+
+                if (manager.bachelor01_university.contains(keyWordOfEliteUni, Qt::CaseInsensitive) || manager.bachelor01_university_standardized.contains(keyWordOfEliteUni, Qt::CaseInsensitive))
+                {
+                    manager.isEliteUni = 2;
+                    qDebug("i = %3d, match_id = %5d, bachelor01_university = %60s     bachelor01_university_standardized = %20s", i+2, manager.match_id, manager.bachelor01_university.toStdString().c_str(), manager.bachelor01_university_standardized.toStdString().c_str());
+                }
+
+                if (manager.bachelor02_university.contains(keyWordOfEliteUni, Qt::CaseInsensitive) || manager.bachelor02_university_standardized.contains(keyWordOfEliteUni, Qt::CaseInsensitive))
+                {
+                    manager.isEliteUni = 2;
+                    qDebug("i = %3d, match_id = %5d, bachelor02_university = %60s     bachelor02_university_standardized = %20s", i+2, manager.match_id, manager.bachelor02_university.toStdString().c_str(), manager.bachelor02_university_standardized.toStdString().c_str());
+                }
+
+                if (manager.other01_university.contains(keyWordOfEliteUni, Qt::CaseInsensitive)    || manager.other01_university_standardized.contains(keyWordOfEliteUni, Qt::CaseInsensitive))
+                {
+                    manager.isEliteUni = 2;
+                    qDebug("i = %3d, match_id = %5d, other01_university    = %60s     other01_university_standardized    = %20s", i+2, manager.match_id, manager.other01_university.toStdString().c_str(), manager.other01_university_standardized.toStdString().c_str());
+                }
+            }
+        }
 
         if (debug)
         {
@@ -503,10 +700,11 @@ void MainWindow::handelManagerList(QList<Manager>& managerList)
 
 void MainWindow::outputResult(QList<Manager>& managerList)
 {
+    qDebug("xxxxxxxxx");
     for (int i = 0; i < managerList.size(); ++i)
     {
-
-        qDebug("match_id = %5d, phd = %d, mba = %d, jd = %d", managerList.at(i).match_id, managerList.at(i).hasPHD, managerList.at(i).hasMBA, managerList.at(i).hasJD);
+        qDebug("i = %3d, match_id = %5d, elite = %d", i+2, managerList.at(i).match_id, managerList.at(i).isEliteUni);
+//        qDebug("match_id = %5d, phd = %d, mba = %d, jd = %d", managerList.at(i).match_id, managerList.at(i).hasPHD, managerList.at(i).hasMBA, managerList.at(i).hasJD);
 
 
 //        if (managerList.at(i).ceoLevelEdu != Manager::not_available)
