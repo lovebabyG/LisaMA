@@ -15,8 +15,13 @@ CONFIG += c++11
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    CEO.cpp \
+    Manager.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    CEO.h \
+    globaldefine.h \
+    Manager.h
 
 FORMS    += mainwindow.ui

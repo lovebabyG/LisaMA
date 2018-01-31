@@ -11,101 +11,7 @@
 bool debug = false;
 bool csvConvertedinMac = true;
 
-QStringList ExatNameListOfEliteUni = {
-                                  "Oxford University",                 // University of Oxford
-                                  "All Souls College, Oxford University",  // University of Oxford
-                                  "University of Oxford",                  // University of Oxford
-                                  "University College, Oxford University", // University of Oxford
 
-                                  "University of Cambridge", // University of Cambridge
-                                  "Murray Edwards College, Cambridge University (New Hall, Cambridge University prior to 06/2008)", // University of Cambridge
-                                  "Judge Business School (Judge Institute of Management Studies prior to 09/2005)", // University of Cambridge
-                                  "King's College Cambridge, University of Cambridge", // University of Cambridge
-                                  "Christ's College, Cambridge University", // University of Cambridge
-                                  "Gonville and Caius College, Cambridge University", // University of Cambridge
-                                  "Downing College, Cambridge University", // University of Cambridge
-
-                                  // California Institute of Technology; University of California, Los Angeles;
-                                  "University of California, Berkeley", // University of California, Berkeley
-                                  "University of California, Los Angeles", // University of California, Los Angeles
-                                  "Anderson Graduate School of Management, University of California", // University of California, Los Angeles
-
-                                  "Stanford", // Stanford University
-                                  "Stanford University", // Stanford University
-                                  "Stanford University, Graduate School of Business", // Stanford University
-                                  "Stanford University School of Medicine", // Stanford University
-
-                                  "Massachusetts Institute of Technology (MIT)", // Massachusetts Institute of Technology
-                                  "University of Massachusetts, Medical School", // Massachusetts Institute of Technology
-                                  "Massachusetts Institute of Technology", // Massachusetts Institute of Technology
-                                  "Massachusetts Institute of Technology (MIT) Sloan School of Management", // Massachusetts Institute of Technology
-                                  "MIT Sloan School of Management",
-
-                                  "Harvard", // Harvard University
-                                  "Harvard Business School", // Harvard University
-                                  "Harvard University", // Harvard University
-                                  "Harvard Graduate School of Arts and Sciences", // Harvard University
-                                  "Harvard College", // Harvard University
-                                  "Harvard Medical School", // Harvard University
-                                  "Harvard Law School", // Harvard University
-
-                                  "Princeton University", // Princeton University
-
-                                  "Imperial College London", // Imperial College London
-                                  "Imperial College London (The Imperial College of Science Technology and Medicine)", // Imperial College London
-
-                                  "University of Chicago", // University of Chicago
-                                  "Booth School of Business, University of Chicago", // University of Chicago
-
-                                  "Eidgenossische Technische Hochschule Zurich (ETH) (Swiss Federal Institute of Technology Zurich)", // ETH Zurich – Swiss Federal Institute of Technology Zurich
-
-                                  "University of Pennsylvania", // University of Pennsylvania
-                                  "Wharton School, University of Pennsylvania", // University of Pennsylvania
-                                  "Moore School of Electrical Engineering, University of Pennsylvania", // University of Pennsylvania
-
-                                  "Yale School of Management", // Yale University
-                                  "Yale University", // Yale University
-
-                                  "Johns Hopkins University", // Johns Hopkins University
-                                  "Johns Hopkins University School for Advanced International Studies", // Johns Hopkins University
-                                  "Johns Hopkins University School for Advanced International Studies (SAIS)", // Johns Hopkins University
-
-                                  "Columbia University", // Columbia University
-                                  "Columbia Business School", // Columbia University
-                                  "Columbia College, Columbia University", // Columbia University
-
-                                  "University College London (UCL)", // UCL
-                                  "University College London",
-
-                                  "Duke University", // Duke University
-
-                                  "Cornell University", // Cornell University
-                                  "Cornell University School of Industrial and Labor Relations",
-
-                                  "Northwestern University", // Northwestern University
-                                  "Kellogg School of Management, Northwestern University" // Northwestern University
-                                    };
-
-
-QStringList keyWordListOfEliteUni = {"Oxford", // University of Oxford
-                                     "Cambridge", // University of Cambridge
-                                     "California", // California Institute of Technology; University of California, Los Angeles; University of California, Berkeley
-                                     "Stanford", // Stanford University
-                                     "Massachusetts", // Massachusetts Institute of Technology
-                                     "Harvard", // Harvard University
-                                     "Princeton", // Princeton University
-                                     "Imperial", // Imperial College London
-                                     "Chicago", // University of Chicago
-                                     "Zurich", // ETH Zurich – Swiss Federal Institute of Technology Zurich
-                                     "Pennsylvania", // University of Pennsylvania
-                                     "Yale", // Yale University
-                                     "Johns Hopkins", // Johns Hopkins University
-                                     "Columbia", // Columbia University
-                                     "UCL", // UCL
-                                     "Duke", // Duke University
-                                     "Cornell", // Cornell University
-                                     "Northwestern" // Northwestern University
-                                    };
 
 
 const int match_id_index = 0;
@@ -440,7 +346,7 @@ void MainWindow::handelManagerList(QList<Manager>& managerList)
     for (int i = 0; i < managerList.size(); ++i)
     {
         Manager& manager = managerList[i];
-        manager.ceoLevelEdu = Manager::not_available;
+        manager.ceoLevelEdu = not_available;
         manager.hasPHD = false;
         manager.hasMBA = false;
         manager.hasJD = false;
@@ -450,22 +356,22 @@ void MainWindow::handelManagerList(QList<Manager>& managerList)
             !manager.phd02_university.isEmpty() || !manager.phd02_university_standardized.isEmpty() || !manager.phd02_degree.isEmpty() || !manager.phd02_degree_standardized.isEmpty() ||
             !manager.jd01_university.isEmpty()  || !manager.jd01_university_standardized.isEmpty()  || !manager.jd01_degree.isEmpty()  || !manager.jd01_degree_standardized.isEmpty())
         {
-            manager.ceoLevelEdu = Manager::phd;
+            manager.ceoLevelEdu = phd;
         }
         else if (!manager.mba01_university.isEmpty() || !manager.mba01_university_standardized.isEmpty() || !manager.mba01_degree.isEmpty() || !manager.mba01_degree_standardized.isEmpty() ||
                  !manager.mba02_university.isEmpty() || !manager.mba02_university_standardized.isEmpty() || !manager.mba02_degree.isEmpty() || !manager.mba02_degree_standardized.isEmpty())
         {
-            manager.ceoLevelEdu = Manager::mba;
+            manager.ceoLevelEdu = mba;
         }
         else if (!manager.master01_university.isEmpty() || !manager.master01_university_standardized.isEmpty() || !manager.master01_degree.isEmpty() || !manager.master01_degree_standardized.isEmpty() ||
                  !manager.master02_university.isEmpty() || !manager.master02_university_standardized.isEmpty() || !manager.master02_degree.isEmpty() || !manager.master02_degree_standardized.isEmpty())
         {
-            manager.ceoLevelEdu = Manager::master;
+            manager.ceoLevelEdu = master;
         }
         else if (!manager.bachelor01_university.isEmpty() || !manager.bachelor01_university_standardized.isEmpty() || !manager.bachelor01_degree.isEmpty() || !manager.bachelor01_degree_standardized.isEmpty() ||
                  !manager.bachelor02_university.isEmpty() || !manager.bachelor02_university_standardized.isEmpty() || !manager.bachelor02_degree.isEmpty() || !manager.bachelor02_degree_standardized.isEmpty())
         {
-            manager.ceoLevelEdu = Manager::bachelor;
+            manager.ceoLevelEdu = bachelor;
         }
 
 
@@ -707,7 +613,7 @@ void MainWindow::outputResult(QList<Manager>& managerList)
 //        qDebug("match_id = %5d, phd = %d, mba = %d, jd = %d", managerList.at(i).match_id, managerList.at(i).hasPHD, managerList.at(i).hasMBA, managerList.at(i).hasJD);
 
 
-//        if (managerList.at(i).ceoLevelEdu != Manager::not_available)
+//        if (managerList.at(i).ceoLevelEdu != not_available)
 //        {
 ////            qDebug("match_id = %5d, ceoLevel = %d", managerList.at(i).match_id, managerList.at(i).ceoLevelEdu);
 //            qDebug("%d", managerList.at(i).ceoLevelEdu);
