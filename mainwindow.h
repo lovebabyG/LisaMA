@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "globaldefine.h"
 #include "Manager.h"
+#include "CEO.h"
 
 
 namespace Ui {
@@ -32,6 +33,14 @@ private:
     void handelManagerList(QList<Manager>& managerList);
 
     void outputResult(QList<Manager>& managerList);
+
+    void parseCEOData();
+
+    void parseCEODataInMac(QFile& file, QList<CEO>& ceoList);
+
+    void parseLineToCEO(const QStringList& line, CEO& ceo);
+
+    void handelCEOList(QList<CEO>& ceoList);
 
 
 
