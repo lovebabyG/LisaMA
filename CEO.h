@@ -63,17 +63,17 @@ public:
     static const int phd02_major_index = 43;
     static const int phd02_major_standardized_index = 44;
 
-//    static const int jd01_university_index = 33;
-//    static const int jd01_university_standardized_index = 34;
-//    static const int jd01_degree_index = 35;
-//    static const int jd01_degree_standardized_index = 36;
+    static const int jd01_university_index = 45;
+    static const int jd01_university_standardized_index = 46;
+    static const int jd01_degree_index = 47;
+    static const int jd01_degree_standardized_index = 48;
 
 //    static const int other01_university_index = 37;
 //    static const int other01_university_standardized_index = 38;
 //    static const int other01_degree_index = 39;
 //    static const int other01_degree_standardized_index = 40;
 
-    static const int last_end_CEO_index = 45;
+    static const int last_end_CEO_index = 49;
 
     int match_id;
     QString bachelor01_university;
@@ -128,10 +128,10 @@ public:
     QString phd02_major;
     QString phd02_major_standardized;
 
-//    QString jd01_university;
-//    QString jd01_university_standardized;
-//    QString jd01_degree;
-//    QString jd01_degree_standardized;
+    QString jd01_university;
+    QString jd01_university_standardized;
+    QString jd01_degree;
+    QString jd01_degree_standardized;
 
 //    QString other01_university;
 //    QString other01_university_standardized;

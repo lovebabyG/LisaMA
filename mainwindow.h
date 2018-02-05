@@ -24,15 +24,15 @@ public:
 private:
     void parseData();
 
-    void parseDataInMac(QFile& file, QList<Manager>& managerList);
+    void parseManagerDataInMac(QFile& file, QList<Manager>& managerList);
 
-    void parseDataInWin(QFile& file, QList<Manager>& managerList);
+    void parseManagerDataInWin(QFile& file, QList<Manager>& managerList);
 
     void parseLineToManager(const QStringList& line, Manager& manager);
 
     void handelManagerList(QList<Manager>& managerList);
 
-    void outputResult(QList<Manager>& managerList);
+    void printManagerResult(QList<Manager>& managerList);
 
     void parseCEOData();
 
@@ -40,7 +40,11 @@ private:
 
     void parseLineToCEO(const QStringList& line, CEO& ceo);
 
+    void printCEOData(QList<CEO>& ceoList);
+
     void handelCEOList(QList<CEO>& ceoList);
+
+    void printCEOResult(QList<CEO>& managerList);
 
 
 

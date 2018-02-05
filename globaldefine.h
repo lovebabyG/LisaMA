@@ -29,8 +29,11 @@ static QStringList ExatNameListOfEliteUni = {
 
                                   // California Institute of Technology; University of California, Los Angeles;
                                   "University of California, Berkeley", // University of California, Berkeley
+                                  "University of California at Berkeley", // University of California, Berkeley
                                   "University of California, Los Angeles", // University of California, Los Angeles
+                                  "University of California at Los Angeles", // University of California, Los Angeles
                                   "Anderson Graduate School of Management, University of California", // University of California, Los Angeles
+                                  "UCLA John E Anderson Graduate School of Management"
 
                                   "Stanford", // Stanford University
                                   "Stanford University", // Stanford University

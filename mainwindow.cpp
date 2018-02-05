@@ -98,7 +98,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     */
 
-    parseData();
+    //parseData();
 
     parseCEOData();
 }
@@ -134,21 +134,21 @@ void MainWindow::parseData()
 
     if (csvConvertedinMac)
     {
-       parseDataInMac(file, managerList);
+       parseManagerDataInMac(file, managerList);
     }
     else
     {
-        parseDataInWin(file, managerList);
+        parseManagerDataInWin(file, managerList);
     }
 
     file.close();
 
     handelManagerList(managerList);
 
-    outputResult(managerList);
+    printManagerResult(managerList);
 }
 
-void MainWindow::parseDataInMac(QFile& file, QList<Manager>& managerList)
+void MainWindow::parseManagerDataInMac(QFile& file, QList<Manager>& managerList)
 {
     QString dataReplaced;
     while (!file.atEnd())
@@ -172,7 +172,7 @@ void MainWindow::parseDataInMac(QFile& file, QList<Manager>& managerList)
    }
 }
 
-void MainWindow::parseDataInWin(QFile& file, QList<Manager>& managerList)
+void MainWindow::parseManagerDataInWin(QFile& file, QList<Manager>& managerList)
 {
     QTextStream in(&file);
 
@@ -606,7 +606,7 @@ void MainWindow::handelManagerList(QList<Manager>& managerList)
 
 }
 
-void MainWindow::outputResult(QList<Manager>& managerList)
+void MainWindow::printManagerResult(QList<Manager>& managerList)
 {
     qDebug("xxxxxxxxx");
     for (int i = 0; i < managerList.size(); ++i)
@@ -663,9 +663,14 @@ void MainWindow::parseCEOData()
 
     file.close();
 
+    if (debug)
+    {
+        printCEOData(ceoList);
+    }
+
     handelCEOList(ceoList);
 
-    //outputResult(ceoList);
+    printCEOResult(ceoList);
 }
 
 void MainWindow::parseCEODataInMac(QFile& file, QList<CEO>& ceoList)
@@ -847,10 +852,130 @@ void MainWindow::parseLineToCEO(const QStringList& line, CEO& ceo)
         case CEO::phd02_major_standardized_index:
             ceo.phd02_major_standardized = data;
             break;
+
+        case CEO::jd01_university_index:
+            ceo.jd01_university = data;
+            break;
+        case CEO::jd01_university_standardized_index:
+            ceo.jd01_university_standardized = data;
+            break;
+        case CEO::jd01_degree_index:
+            ceo.jd01_degree = data;
+            break;
+        case CEO::jd01_degree_standardized_index:
+            ceo.jd01_degree_standardized = data;
+            break;
         }
     }
 }
 
+void MainWindow::printCEOData(QList<CEO>& ceoList)
+{
+    for (int i = 0; i < ceoList.size(); ++i)
+    {
+        const CEO& ceo = ceoList.at(i);
+        qDebug("i = %3d, match_id = %5d,\
+                bachelor01_university = %s,\
+                bachelor01_university_standardiz = %s,\
+                bachelor01_degree = %s,\
+                bachelor01_degree_standardized = %s,\
+                bachelor01_major = %s,\
+                bachelor01_major_standardiz = %s,\
+                bachelor02_university = %s,\
+                bachelor02_university_standardiz = %s,\
+                bachelor02_degree = %s,\
+                bachelor02_degree_standardized = %s,\
+                bachelor02_major = %s,\
+                bachelor02_major_standardiz = %s,\
+                master01_university = %s,\
+                master01_university_standardized = %s,\
+                master01_degree = %s,\
+                master01_degree_standardized = %s,\
+                master01_major = %s,\
+                master01_major_standardiz = %s,\
+                master02_university = %s,\
+                master02_university_standardized = %s,\
+                master02_degree = %s,\
+                master02_degree_standardized = %s,\
+                master02_major = %s,\
+                master02_major_standardiz = %s,\
+                mba01_university = %s,\
+                mba01_university_standardized = %s,\
+                mba01_degree = %s,\
+                mba01_degree_standardized = %s,\
+                mba02_university = %s,\
+                mba02_university_standardized = %s,\
+                mba02_degree = %s,\
+                mba02_degree_standardized = %s,\
+                phd01_university = %s,\
+                phd01_university_standardized = %s,\
+                phd01_degree = %s,\
+                phd01_degree_standardized = %s,\
+                phd01_major = %s,\
+                phd01_major_standardiz = %s,\
+                phd02_university = %s,\
+                phd02_university_standardized = %s,\
+                phd02_degree = %s,\
+                phd02_degree_standardized = %s,\
+                phd02_major = %s,\
+                phd02_major_standardized = %s,\
+                jd01_university = %s,\
+                jd01_university_standardized = %s,\
+                jd01_degree = %s,\
+                jd01_degree_standardized = %s",\
+                i+2, ceo.match_id,\
+                   ceo.bachelor01_university.toStdString().c_str(),\
+                   ceo.bachelor01_university_standardized.toStdString().c_str(),\
+                   ceo.bachelor01_degree.toStdString().c_str(),\
+                   ceo.bachelor01_degree_standardized.toStdString().c_str(),\
+                   ceo.bachelor01_major.toStdString().c_str(),\
+                   ceo.bachelor01_major_standardized.toStdString().c_str(),\
+                   ceo.bachelor02_university.toStdString().c_str(),\
+                   ceo.bachelor02_university_standardized.toStdString().c_str(),\
+                   ceo.bachelor02_degree.toStdString().c_str(),\
+                   ceo.bachelor02_degree_standardized.toStdString().c_str(),\
+                   ceo.bachelor02_major.toStdString().c_str(),\
+                   ceo.bachelor02_major_standardized.toStdString().c_str(),\
+                   ceo.master01_university.toStdString().c_str(),\
+                   ceo.master01_university_standardized.toStdString().c_str(),\
+                   ceo.master01_degree.toStdString().c_str(),\
+                   ceo.master01_degree_standardized.toStdString().c_str(),\
+                   ceo.master01_major.toStdString().c_str(),\
+                   ceo.master01_major_standardized.toStdString().c_str(),\
+                   ceo.master02_university.toStdString().c_str(),\
+                   ceo.master02_university_standardized.toStdString().c_str(),\
+                   ceo.master02_degree.toStdString().c_str(),\
+                   ceo.master02_degree_standardized.toStdString().c_str(),\
+                   ceo.master02_major.toStdString().c_str(),\
+                   ceo.master02_major_standardized.toStdString().c_str(),\
+                   ceo.mba01_university.toStdString().c_str(),\
+                   ceo.mba01_university_standardized.toStdString().c_str(),\
+                   ceo.mba01_degree.toStdString().c_str(),\
+                   ceo.mba01_degree_standardized.toStdString().c_str(),\
+                   ceo.mba02_university.toStdString().c_str(),\
+                   ceo.mba02_university_standardized.toStdString().c_str(),\
+                   ceo.mba02_degree.toStdString().c_str(),\
+                   ceo.mba02_degree_standardized.toStdString().c_str(),\
+                   ceo.phd01_university.toStdString().c_str(),\
+                   ceo.phd01_university_standardized.toStdString().c_str(),\
+                   ceo.phd01_degree.toStdString().c_str(),\
+                   ceo.phd01_degree_standardized.toStdString().c_str(),\
+                   ceo.phd01_major.toStdString().c_str(),\
+                   ceo.phd01_major_standardized.toStdString().c_str(),\
+                   ceo.phd02_university.toStdString().c_str(),\
+                   ceo.phd02_university_standardized.toStdString().c_str(),\
+                   ceo.phd02_degree.toStdString().c_str(),\
+                   ceo.phd02_degree_standardized.toStdString().c_str(),\
+                   ceo.phd02_major.toStdString().c_str(),\
+                   ceo.phd02_major_standardized.toStdString().c_str(),\
+                   ceo.jd01_university.toStdString().c_str(),\
+                   ceo.jd01_university_standardized.toStdString().c_str(),\
+                   ceo.jd01_degree.toStdString().c_str(),\
+                   ceo.jd01_degree_standardized.toStdString().c_str()
+               );
+    }
+
+}
 
 void MainWindow::handelCEOList(QList<CEO>& ceoList)
 {
@@ -864,7 +989,8 @@ void MainWindow::handelCEOList(QList<CEO>& ceoList)
 
         // ceo edu level
         if (!ceo.phd01_university.isEmpty() || !ceo.phd01_university_standardized.isEmpty() || !ceo.phd01_degree.isEmpty() || !ceo.phd01_degree_standardized.isEmpty() ||
-            !ceo.phd02_university.isEmpty() || !ceo.phd02_university_standardized.isEmpty() || !ceo.phd02_degree.isEmpty() || !ceo.phd02_degree_standardized.isEmpty())
+            !ceo.phd02_university.isEmpty() || !ceo.phd02_university_standardized.isEmpty() || !ceo.phd02_degree.isEmpty() || !ceo.phd02_degree_standardized.isEmpty() ||
+            !ceo.jd01_university.isEmpty()  || !ceo.jd01_university_standardized.isEmpty()  || !ceo.jd01_degree.isEmpty()  || !ceo.jd01_degree_standardized.isEmpty())
         {
             ceo.ceoLevelEdu = phd;
         }
@@ -884,7 +1010,6 @@ void MainWindow::handelCEOList(QList<CEO>& ceoList)
             ceo.ceoLevelEdu = bachelor;
         }
 
-
         // phd mba JD
         if (!ceo.phd01_university.isEmpty() || !ceo.phd01_university_standardized.isEmpty() || !ceo.phd01_degree.isEmpty() || !ceo.phd01_degree_standardized.isEmpty() ||
             !ceo.phd02_university.isEmpty() || !ceo.phd02_university_standardized.isEmpty() || !ceo.phd02_degree.isEmpty() || !ceo.phd02_degree_standardized.isEmpty())
@@ -898,10 +1023,10 @@ void MainWindow::handelCEOList(QList<CEO>& ceoList)
             ceo.hasMBA = true;
         }
 
-//        if (!ceo.jd01_university.isEmpty()  || !ceo.jd01_university_standardized.isEmpty()  || !ceo.jd01_degree.isEmpty()  || !ceo.jd01_degree_standardized.isEmpty())
-//        {
-//            ceo.hasJD = true;
-//        }
+        if (!ceo.jd01_university.isEmpty()  || !ceo.jd01_university_standardized.isEmpty()  || !ceo.jd01_degree.isEmpty()  || !ceo.jd01_degree_standardized.isEmpty())
+        {
+            ceo.hasJD = true;
+        }
 
         // elite uni
         for (QString& ExatNameOfEliteUni : ExatNameListOfEliteUni)
@@ -916,11 +1041,11 @@ void MainWindow::handelCEOList(QList<CEO>& ceoList)
                 ceo.isEliteUni = 1;
                 break;
             }
-//            else if (ExatNameOfEliteUni == ceo.jd01_university || ExatNameOfEliteUni == ceo.jd01_university_standardized)
-//            {
-//                ceo.isEliteUni = 1;
-//                break;
-//            }
+            else if (ExatNameOfEliteUni == ceo.jd01_university || ExatNameOfEliteUni == ceo.jd01_university_standardized)
+            {
+                ceo.isEliteUni = 1;
+                break;
+            }
             else if (ExatNameOfEliteUni == ceo.mba01_university || ExatNameOfEliteUni == ceo.mba01_university_standardized)
             {
                 ceo.isEliteUni = 1;
@@ -974,11 +1099,11 @@ void MainWindow::handelCEOList(QList<CEO>& ceoList)
                     qDebug("i = %3d, match_id = %5d, phd02_university      = %60s     phd02_university_standardized      = %20s", i+2, ceo.match_id, ceo.phd02_university.toStdString().c_str(), ceo.phd02_university_standardized.toStdString().c_str());
                 }
 
-//                if (ceo.jd01_university.contains(keyWordOfEliteUni,  Qt::CaseInsensitive)      || ceo.jd01_university_standardized.contains(keyWordOfEliteUni, Qt::CaseInsensitive))
-//                {
-//                    ceo.isEliteUni = 2;
-//                    qDebug("i = %3d, match_id = %5d, jd01_university       = %60s      jd01_university_standardized       = %20s", i+2, ceo.match_id, ceo.jd01_university.toStdString().c_str(), ceo.jd01_university_standardized.toStdString().c_str());
-//                }
+                if (ceo.jd01_university.contains(keyWordOfEliteUni,  Qt::CaseInsensitive)      || ceo.jd01_university_standardized.contains(keyWordOfEliteUni, Qt::CaseInsensitive))
+                {
+                    ceo.isEliteUni = 2;
+                    qDebug("i = %3d, match_id = %5d, jd01_university       = %60s      jd01_university_standardized       = %20s", i+2, ceo.match_id, ceo.jd01_university.toStdString().c_str(), ceo.jd01_university_standardized.toStdString().c_str());
+                }
 
                 if (ceo.mba01_university.contains(keyWordOfEliteUni, Qt::CaseInsensitive)      || ceo.mba01_university_standardized.contains(keyWordOfEliteUni, Qt::CaseInsensitive))
                 {
@@ -1024,93 +1149,24 @@ void MainWindow::handelCEOList(QList<CEO>& ceoList)
             }
         }
 
-        if (debug)
+    }
+}
+
+void MainWindow::printCEOResult(QList<CEO>& ceoList)
+{
+    qDebug("xxxxxxxxx");
+    for (int i = 0; i < ceoList.size(); ++i)
+    {
+//        qDebug("i = %3d, match_id = %5d, elite = %d, phd = %d, mba = %d, jd = %d",
+//               i+2, ceoList.at(i).match_id, ceoList.at(i).isEliteUni, ceoList.at(i).hasPHD, ceoList.at(i).hasMBA, ceoList.at(i).hasJD);
+
+        if (ceoList.at(i).ceoLevelEdu != not_available)
         {
-        qDebug("i = %d, match_id = %d,\
-                bachelor01_university = %s,\
-                bachelor01_university_standardiz = %s,\
-                bachelor01_degree = %s,\
-                bachelor01_degree_standardized = %s,\
-                bachelor02_university = %s,\
-                bachelor02_university_standardiz = %s,\
-                bachelor02_degree = %s,\
-                bachelor02_degree_standardized = %s,\
-                master01_university = %s,\
-                master01_university_standardized = %s,\
-                master01_degree = %s,\
-                master01_degree_standardized = %s,\
-                master02_university = %s,\
-                master02_university_standardized = %s,\
-                master02_degree = %s,\
-                master02_degree_standardized = %s,\
-                mba01_university = %s,\
-                mba01_university_standardized = %s,\
-                mba01_degree = %s,\
-                mba01_degree_standardized = %s,\
-                mba02_university = %s,\
-                mba02_university_standardized = %s,\
-                mba02_degree = %s,\
-                mba02_degree_standardized = %s,\
-                phd01_university = %s,\
-                phd01_university_standardized = %s,\
-                phd01_degree = %s,\
-                phd01_degree_standardized = %s,\
-                phd02_university = %s,\
-                phd02_university_standardized = %s,\
-                phd02_degree = %s,\
-                phd02_degree_standardized = %s",\
-//                jd01_university = %s,\
-//                jd01_university_standardized = %s,\
-//                jd01_degree = %s,\
-//                jd01_degree_standardized = %s,\
-//                other01_university = %s,\
-//                other01_university_standardized = %s,\
-//                other01_degree = %s,\
-//                other01_degree_standardized = %s",
-                i, ceo.match_id,\
-                   ceo.bachelor01_university.toStdString().c_str(),\
-                   ceo.bachelor01_university_standardized.toStdString().c_str(),\
-                   ceo.bachelor01_degree.toStdString().c_str(),\
-                   ceo.bachelor01_degree_standardized.toStdString().c_str(),\
-                   ceo.bachelor02_university.toStdString().c_str(),\
-                   ceo.bachelor02_university_standardized.toStdString().c_str(),\
-                   ceo.bachelor02_degree.toStdString().c_str(),\
-                   ceo.bachelor02_degree_standardized.toStdString().c_str(),\
-                   ceo.master01_university.toStdString().c_str(),\
-                   ceo.master01_university_standardized.toStdString().c_str(),\
-                   ceo.master01_degree.toStdString().c_str(),\
-                   ceo.master01_degree_standardized.toStdString().c_str(),\
-                   ceo.master02_university.toStdString().c_str(),\
-                   ceo.master02_university_standardized.toStdString().c_str(),\
-                   ceo.master02_degree.toStdString().c_str(),\
-                   ceo.master02_degree_standardized.toStdString().c_str(),\
-                   ceo.mba01_university.toStdString().c_str(),\
-                   ceo.mba01_university_standardized.toStdString().c_str(),\
-                   ceo.mba01_degree.toStdString().c_str(),\
-                   ceo.mba01_degree_standardized.toStdString().c_str(),\
-                   ceo.mba02_university.toStdString().c_str(),\
-                   ceo.mba02_university_standardized.toStdString().c_str(),\
-                   ceo.mba02_degree.toStdString().c_str(),\
-                   ceo.mba02_degree_standardized.toStdString().c_str(),\
-                   ceo.phd01_university.toStdString().c_str(),\
-                   ceo.phd01_university_standardized.toStdString().c_str(),\
-                   ceo.phd01_degree.toStdString().c_str(),\
-                   ceo.phd01_degree_standardized.toStdString().c_str(),\
-                   ceo.phd02_university.toStdString().c_str(),\
-                   ceo.phd02_university_standardized.toStdString().c_str(),\
-                   ceo.phd02_degree.toStdString().c_str(),\
-                   ceo.phd02_degree_standardized.toStdString().c_str()\
-//                   ceo.jd01_university.toStdString().c_str(),\
-//                   ceo.jd01_university_standardized.toStdString().c_str(),\
-//                   ceo.jd01_degree.toStdString().c_str(),\
-//                   ceo.jd01_degree_standardized.toStdString().c_str(),\
-//                   ceo.other01_university.toStdString().c_str(),\
-//                   ceo.other01_university_standardized.toStdString().c_str(),\
-//                   ceo.other01_degree.toStdString().c_str(),\
-//                   ceo.other01_degree_standardized.toStdString().c_str()
-               );
+            qDebug("match_id = %5d, ceoLevel = %d", ceoList.at(i).match_id, ceoList.at(i).ceoLevelEdu);
+        }
+        else
+        {
+            qDebug("match_id = %5d, ceoLevel =  ", ceoList.at(i).match_id);
         }
     }
-
-
 }
